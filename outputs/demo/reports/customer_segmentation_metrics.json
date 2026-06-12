@@ -1,0 +1,17 @@
+{
+  "model": "KMeans",
+  "n_clusters": 4,
+  "customer_rows": 20,
+  "features": [
+    "recency_days",
+    "frequency",
+    "monetary_eur",
+    "avg_order_value_eur",
+    "total_quantity",
+    "unique_products",
+    "unique_categories",
+    "profit_margin"
+  ],
+  "silhouette_score": 0.20699777382359025,
+  "note": "Unsupervised segmentation for business interpretation; segment names are assigned from cluster-level RFM behavior."
+}

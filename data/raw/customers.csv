@@ -1,0 +1,21 @@
+﻿customer_id,first_name,last_name,email,city,country,signup_date
+1,Aarav,Sharma,aarav.s@example.com,Mumbai,India,2023-01-15
+2,Priya,Patel,priya.p@example.com,Bangalore,India,2023-02-08
+3,Rahul,Verma,rahul.v@example.com,Delhi,India,2023-03-21
+4,Sneha,Reddy,sneha.r@example.com,Hyderabad,India,2023-04-12
+5,Vikram,Singh,vikram.s@example.com,Pune,India,2023-05-30
+6,Anjali,Iyer,anjali.i@example.com,Chennai,India,2023-06-18
+7,Karan,Mehta,karan.m@example.com,Mumbai,India,2023-07-05
+8,Divya,Nair,divya.n@example.com,Kochi,India,2023-08-22
+9,Rohan,Gupta,rohan.g@example.com,Kolkata,India,2023-09-10
+10,Meera,Joshi,meera.j@example.com,Ahmedabad,India,2023-10-01
+11,James,Smith,james.s@example.com,London,UK,2023-02-20
+12,Emma,Brown,emma.b@example.com,Manchester,UK,2023-04-15
+13,Liam,Wilson,liam.w@example.com,Birmingham,UK,2023-06-10
+14,Sophia,Taylor,sophia.t@example.com,London,UK,2023-08-05
+15,Noah,Anderson,noah.a@example.com,New York,USA,2023-03-12
+16,Olivia,Thomas,olivia.t@example.com,Los Angeles,USA,2023-05-19
+17,Ethan,Jackson,ethan.j@example.com,Chicago,USA,2023-07-25
+18,Ava,White,ava.w@example.com,Houston,USA,2023-09-08
+19,Lucas,Martin,lucas.m@example.com,Toronto,Canada,2023-04-02
+20,Mia,Lee,mia.l@example.com,Vancouver,Canada,2023-06-28

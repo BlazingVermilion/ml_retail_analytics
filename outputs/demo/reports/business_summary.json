@@ -1,0 +1,13 @@
+{
+  "orders": 200,
+  "customers": 20,
+  "products": 2,
+  "categories": 2,
+  "date_min": "2024-01-01",
+  "date_max": "2025-03-25",
+  "total_revenue_eur": 61351.01,
+  "total_profit_eur": 34536.01,
+  "average_order_value_eur": 306.76,
+  "top_category_by_revenue": "Sports",
+  "top_country_by_revenue": "India"
+}

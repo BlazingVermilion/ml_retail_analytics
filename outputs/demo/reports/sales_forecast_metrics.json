@@ -1,0 +1,13 @@
+{
+  "model": "RandomForestRegressor",
+  "target": "revenue_eur",
+  "train_rows": 360,
+  "test_rows": 90,
+  "forecast_horizon_days": 30,
+  "mae": 17.381123887128947,
+  "rmse": 35.80593787514039,
+  "mape_percent_nonzero_days": 19.399702897103733,
+  "r2": 0.9528167432841781,
+  "baseline_mae_previous_7d_mean": 145.61322222222225,
+  "note": "Small course dataset; model is intended as a portfolio-grade ML extension, not a production forecast service."
+}

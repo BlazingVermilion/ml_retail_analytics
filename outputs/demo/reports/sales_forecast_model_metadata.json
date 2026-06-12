@@ -1,0 +1,27 @@
+{
+  "model_family": "tree_based_regression",
+  "algorithm": "RandomForestRegressor",
+  "features": [
+    "day_of_week",
+    "month",
+    "quarter",
+    "day_of_month",
+    "is_weekend",
+    "order_count",
+    "item_quantity",
+    "unique_customers",
+    "unique_products",
+    "revenue_lag_1",
+    "revenue_lag_7",
+    "revenue_lag_14",
+    "revenue_lag_30",
+    "revenue_rolling_mean_7",
+    "revenue_rolling_mean_14",
+    "revenue_rolling_mean_30",
+    "order_rolling_mean_7",
+    "order_rolling_mean_14",
+    "order_rolling_mean_30"
+  ],
+  "target": "revenue_eur",
+  "forecast_horizon_days": 30
+}
