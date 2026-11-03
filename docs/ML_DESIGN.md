@@ -23,7 +23,7 @@ The dataset is small, so the models should be interpreted as portfolio-grade ana
 - Demand/activity features: order count, item quantity, unique customers, unique products.
 - Time-series features: revenue lags and rolling revenue/order means.
 
-**Important note:** This is a driver-assisted forecasting baseline. Historical model evaluation uses known daily activity features. Future forecasts estimate unknown demand drivers from recent rolling behavior. This is acceptable for a portfolio project, but a production system would require stronger demand forecasting, validation, monitoring, and larger historical data.
+The historical fit uses observed same-day activity. The forward backtest instead steps through the held-out days in forecast-horizon blocks. At each origin the model sees only preceding observations, estimates unknown activity from prior days and rolls its own predicted revenue forward. The comparison holds the preceding seven-day mean fixed throughout the same window.
 
 **Outputs:**
 

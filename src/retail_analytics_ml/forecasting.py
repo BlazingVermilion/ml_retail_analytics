@@ -91,6 +91,24 @@ def train_sales_forecast_model(
         "note": "Small course dataset; model is intended as a portfolio-grade ML extension, not a production forecast service.",
     }
 
+    # Evaluate the actual forward path using only data known at each forecast origin.
+    if forecast_horizon > 0:
+        predictions = []
+        baseline = []
+        for origin in range(split_idx, len(df), forecast_horizon):
+            observed = df.iloc[:origin]
+            days = min(forecast_horizon, len(df) - origin)
+            block = _forecast_future(observed, model, days)
+            predictions.extend(block["predicted_revenue_eur"])
+            baseline.extend([observed[TARGET].tail(7).mean()] * days)
+        metrics["forward_backtest"] = {
+            "horizon_days": forecast_horizon,
+            "test_days": len(predictions),
+            "mae_eur": float(mean_absolute_error(test_df[TARGET], predictions)),
+            "baseline_mae_eur": float(mean_absolute_error(test_df[TARGET], baseline)),
+        }
+    metrics["note"] = "Top-level errors use observed same-day activity. Forward backtest errors use only pre-origin observations."
+
     history = df[["order_date", "revenue_eur", "predicted_revenue_eur"]].copy()
     history["row_type"] = "historical"
 
