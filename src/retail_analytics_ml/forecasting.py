@@ -39,7 +39,9 @@ def _mape(y_true: pd.Series | np.ndarray, y_pred: pd.Series | np.ndarray) -> flo
     non_zero = y_true_arr != 0
     if not non_zero.any():
         return 0.0
-    return float(np.mean(np.abs((y_true_arr[non_zero] - y_pred_arr[non_zero]) / y_true_arr[non_zero])) * 100)
+    return float(
+        np.mean(np.abs((y_true_arr[non_zero] - y_pred_arr[non_zero]) / y_true_arr[non_zero])) * 100
+    )
 
 
 def train_sales_forecast_model(
@@ -88,7 +90,6 @@ def train_sales_forecast_model(
         "mape_percent_nonzero_days": _mape(test_df[TARGET], test_pred),
         "r2": float(r2_score(test_df[TARGET], test_pred)) if len(test_df) > 1 else 0.0,
         "baseline_mae_previous_7d_mean": float(mean_absolute_error(test_df[TARGET], naive_pred)),
-        "note": "Small course dataset; model is intended as a portfolio-grade ML extension, not a production forecast service.",
     }
 
     # Evaluate the actual forward path using only data known at each forecast origin.
@@ -107,7 +108,10 @@ def train_sales_forecast_model(
             "mae_eur": float(mean_absolute_error(test_df[TARGET], predictions)),
             "baseline_mae_eur": float(mean_absolute_error(test_df[TARGET], baseline)),
         }
-    metrics["note"] = "Top-level errors use observed same-day activity. Forward backtest errors use only pre-origin observations."
+    metrics["note"] = (
+        "Top-level errors use observed same-day activity. "
+        "Forward backtest errors use only pre-origin observations."
+    )
 
     history = df[["order_date", "revenue_eur", "predicted_revenue_eur"]].copy()
     history["row_type"] = "historical"
@@ -180,9 +184,15 @@ def _forecast_future(df: pd.DataFrame, model: RandomForestRegressor, horizon: in
             "revenue_lag_7": history_values[-7] if len(history_values) >= 7 else 0.0,
             "revenue_lag_14": history_values[-14] if len(history_values) >= 14 else 0.0,
             "revenue_lag_30": history_values[-30] if len(history_values) >= 30 else 0.0,
-            "revenue_rolling_mean_7": float(np.mean(history_values[-7:])) if len(history_values) >= 7 else 0.0,
-            "revenue_rolling_mean_14": float(np.mean(history_values[-14:])) if len(history_values) >= 14 else 0.0,
-            "revenue_rolling_mean_30": float(np.mean(history_values[-30:])) if len(history_values) >= 30 else 0.0,
+            "revenue_rolling_mean_7": float(np.mean(history_values[-7:]))
+            if len(history_values) >= 7
+            else 0.0,
+            "revenue_rolling_mean_14": float(np.mean(history_values[-14:]))
+            if len(history_values) >= 14
+            else 0.0,
+            "revenue_rolling_mean_30": float(np.mean(history_values[-30:]))
+            if len(history_values) >= 30
+            else 0.0,
             "order_rolling_mean_7": historical_means["order_count"],
             "order_rolling_mean_14": historical_means["order_count"],
             "order_rolling_mean_30": historical_means["order_count"],

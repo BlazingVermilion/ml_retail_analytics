@@ -34,7 +34,9 @@ def run_all(data_dir: str | Path, output_dir: str | Path, forecast_horizon: int 
     daily_features.to_csv(daily_features_path, index=False)
     customer_features.to_csv(customer_features_path, index=False)
 
-    forecast_outputs = train_sales_forecast_model(daily_features, output_path, forecast_horizon=forecast_horizon)
+    forecast_outputs = train_sales_forecast_model(
+        daily_features, output_path, forecast_horizon=forecast_horizon
+    )
     segment_outputs = train_customer_segmentation(customer_features, output_path)
     create_summary_report(sales_fact, output_path)
 
@@ -53,10 +55,18 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Retail analytics and ML pipeline")
     subparsers = parser.add_subparsers(dest="command", required=True)
 
-    run_parser = subparsers.add_parser("run-all", help="Run data preparation, forecasting, segmentation, and plots")
-    run_parser.add_argument("--data-dir", default="data/raw", help="Directory containing raw CSV files")
-    run_parser.add_argument("--output-dir", default="outputs/demo", help="Directory for generated artifacts")
-    run_parser.add_argument("--forecast-horizon", type=int, default=30, help="Number of days to forecast")
+    run_parser = subparsers.add_parser(
+        "run-all", help="Run data preparation, forecasting, segmentation, and plots"
+    )
+    run_parser.add_argument(
+        "--data-dir", default="data/raw", help="Directory containing raw CSV files"
+    )
+    run_parser.add_argument(
+        "--output-dir", default="outputs/demo", help="Directory for generated artifacts"
+    )
+    run_parser.add_argument(
+        "--forecast-horizon", type=int, default=30, help="Number of days to forecast"
+    )
     return parser.parse_args()
 
 

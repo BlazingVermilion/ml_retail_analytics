@@ -67,8 +67,16 @@ def build_daily_revenue_features(sales_fact: pd.DataFrame) -> pd.DataFrame:
     daily["avg_order_value_eur"] = daily["revenue_eur"] / daily["order_count"].replace(0, np.nan)
 
     full_dates = pd.date_range(daily["order_date"].min(), daily["order_date"].max(), freq="D")
-    daily = daily.set_index("order_date").reindex(full_dates).rename_axis("order_date").reset_index()
-    fill_zero_cols = ["revenue_eur", "order_count", "item_quantity", "unique_customers", "unique_products"]
+    daily = (
+        daily.set_index("order_date").reindex(full_dates).rename_axis("order_date").reset_index()
+    )
+    fill_zero_cols = [
+        "revenue_eur",
+        "order_count",
+        "item_quantity",
+        "unique_customers",
+        "unique_products",
+    ]
     daily[fill_zero_cols] = daily[fill_zero_cols].fillna(0)
     daily["avg_order_value_eur"] = daily["avg_order_value_eur"].fillna(0)
 
@@ -82,13 +90,17 @@ def build_daily_revenue_features(sales_fact: pd.DataFrame) -> pd.DataFrame:
         daily[f"revenue_lag_{lag}"] = daily["revenue_eur"].shift(lag)
 
     for window in (7, 14, 30):
-        daily[f"revenue_rolling_mean_{window}"] = daily["revenue_eur"].shift(1).rolling(window).mean()
+        daily[f"revenue_rolling_mean_{window}"] = (
+            daily["revenue_eur"].shift(1).rolling(window).mean()
+        )
         daily[f"order_rolling_mean_{window}"] = daily["order_count"].shift(1).rolling(window).mean()
 
     return daily.fillna(0)
 
 
-def build_customer_features(sales_fact: pd.DataFrame, reference_date: pd.Timestamp | None = None) -> pd.DataFrame:
+def build_customer_features(
+    sales_fact: pd.DataFrame, reference_date: pd.Timestamp | None = None
+) -> pd.DataFrame:
     """Build customer-level RFM and behavior features for segmentation."""
     if reference_date is None:
         reference_date = sales_fact["order_date"].max() + pd.Timedelta(days=1)
@@ -115,8 +127,12 @@ def build_customer_features(sales_fact: pd.DataFrame, reference_date: pd.Timesta
     customer["customer_name"] = customer["first_name"] + " " + customer["last_name"]
     customer["recency_days"] = (reference_date - customer["last_order_date"]).dt.days
     customer["customer_tenure_days"] = (reference_date - customer["signup_date"]).dt.days
-    customer["avg_order_value_eur"] = customer["monetary_eur"] / customer["frequency"].replace(0, np.nan)
-    customer["profit_margin"] = customer["gross_profit_eur"] / customer["monetary_eur"].replace(0, np.nan)
+    customer["avg_order_value_eur"] = customer["monetary_eur"] / customer["frequency"].replace(
+        0, np.nan
+    )
+    customer["profit_margin"] = customer["gross_profit_eur"] / customer["monetary_eur"].replace(
+        0, np.nan
+    )
 
     favorite_category = (
         sales_fact.groupby(["customer_id", "category_name"])["line_revenue_eur"]
@@ -124,7 +140,12 @@ def build_customer_features(sales_fact: pd.DataFrame, reference_date: pd.Timesta
         .reset_index()
         .sort_values(["customer_id", "line_revenue_eur"], ascending=[True, False])
         .drop_duplicates("customer_id")
-        .rename(columns={"category_name": "favorite_category", "line_revenue_eur": "favorite_category_revenue_eur"})
+        .rename(
+            columns={
+                "category_name": "favorite_category",
+                "line_revenue_eur": "favorite_category_revenue_eur",
+            }
+        )
     )
     customer = customer.merge(favorite_category, on="customer_id", how="left")
     return customer.fillna(0)

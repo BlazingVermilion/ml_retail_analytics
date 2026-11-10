@@ -26,7 +26,9 @@ def create_summary_report(sales_fact: pd.DataFrame, output_dir: str | Path) -> P
         "top_category_by_revenue": str(
             sales_fact.groupby("category_name")["line_revenue_eur"].sum().idxmax()
         ),
-        "top_country_by_revenue": str(sales_fact.groupby("country")["line_revenue_eur"].sum().idxmax()),
+        "top_country_by_revenue": str(
+            sales_fact.groupby("country")["line_revenue_eur"].sum().idxmax()
+        ),
     }
     path = output_path / "business_summary.json"
     path.write_text(json.dumps(summary, indent=2), encoding="utf-8")
@@ -43,8 +45,15 @@ def plot_forecast(forecast_csv: str | Path, output_dir: str | Path) -> Path:
 
     plt.figure(figsize=(12, 6))
     plt.plot(historical["order_date"], historical["revenue_eur"], label="Actual daily revenue")
-    plt.plot(historical["order_date"], historical["predicted_revenue_eur"], label="Model prediction")
-    plt.plot(future["order_date"], future["predicted_revenue_eur"], linestyle="--", label="30-day forecast")
+    plt.plot(
+        historical["order_date"], historical["predicted_revenue_eur"], label="Model prediction"
+    )
+    plt.plot(
+        future["order_date"],
+        future["predicted_revenue_eur"],
+        linestyle="--",
+        label="30-day forecast",
+    )
     plt.title("Sales Forecasting: Actual vs Predicted Revenue")
     plt.xlabel("Date")
     plt.ylabel("Revenue (EUR)")
@@ -56,7 +65,9 @@ def plot_forecast(forecast_csv: str | Path, output_dir: str | Path) -> Path:
     return path
 
 
-def plot_feature_importance(feature_importance_csv: str | Path, output_dir: str | Path, top_n: int = 10) -> Path:
+def plot_feature_importance(
+    feature_importance_csv: str | Path, output_dir: str | Path, top_n: int = 10
+) -> Path:
     importance = pd.read_csv(feature_importance_csv).head(top_n).sort_values("importance")
     figures_path = Path(output_dir) / "figures"
     figures_path.mkdir(parents=True, exist_ok=True)
@@ -110,7 +121,9 @@ def plot_segment_revenue(segment_summary_csv: str | Path, output_dir: str | Path
 def create_all_figures(outputs: dict[str, Path], output_dir: str | Path) -> dict[str, Path]:
     return {
         "forecast_plot": plot_forecast(outputs["forecast"], output_dir),
-        "feature_importance_plot": plot_feature_importance(outputs["feature_importance"], output_dir),
+        "feature_importance_plot": plot_feature_importance(
+            outputs["feature_importance"], output_dir
+        ),
         "customer_segments_plot": plot_customer_segments(outputs["segments"], output_dir),
         "segment_revenue_plot": plot_segment_revenue(outputs["summary"], output_dir),
     }

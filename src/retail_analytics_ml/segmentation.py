@@ -68,8 +68,13 @@ def train_customer_segmentation(
         "n_clusters": int(n_clusters),
         "customer_rows": int(len(df)),
         "features": SEGMENT_FEATURES,
-        "silhouette_score": float(silhouette_score(X_scaled, clusters)) if len(set(clusters)) > 1 else 0.0,
-        "note": "Unsupervised segmentation for business interpretation; segment names are assigned from cluster-level RFM behavior.",
+        "silhouette_score": float(silhouette_score(X_scaled, clusters))
+        if len(set(clusters)) > 1
+        else 0.0,
+        "note": (
+            "Unsupervised segmentation for business interpretation; "
+            "segment names are assigned from cluster-level RFM behavior."
+        ),
     }
 
     segmented_file = reports_path / "customer_segments.csv"
@@ -120,7 +125,9 @@ def _name_segments(df: pd.DataFrame) -> dict[int, str]:
         + cluster_stats["frequency_z"]
         - cluster_stats["recency_days_z"]
     )
-    ranked_clusters = cluster_stats.sort_values("rfm_score", ascending=False)["cluster_id"].astype(int).tolist()
+    ranked_clusters = (
+        cluster_stats.sort_values("rfm_score", ascending=False)["cluster_id"].astype(int).tolist()
+    )
     label_order = [
         "High-Value Loyal Customers",
         "Recent Frequent Buyers",

@@ -22,7 +22,9 @@ def test_sales_fact_matches_powerbi_kpis():
     sales_fact = build_sales_fact(tables)
     assert round(float(sales_fact["line_revenue_eur"].sum()), 2) == 61351.01
     assert sales_fact["order_id"].nunique() == 200
-    assert round(float(sales_fact.groupby("order_id")["line_revenue_eur"].sum().mean()), 2) == 306.76
+    assert (
+        round(float(sales_fact.groupby("order_id")["line_revenue_eur"].sum().mean()), 2) == 306.76
+    )
 
 
 def test_feature_tables_are_created():
